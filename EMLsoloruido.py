@@ -1,3 +1,6 @@
+# Euler-Maruyama, solo ruido, sin histogramas.
+
+
 import numpy as np
 from scipy import constants
 import matplotlib.pyplot as plt
