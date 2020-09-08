@@ -1,0 +1,49 @@
+# (Para energias)
+
+E = np.linspace(0, 8, 1000)
+
+k = # valor de kappa
+T = # temperatura
+N_k = # densidad
+pi = constants.pi
+k_b = constants.Boltzmann
+m = constants.m_e
+Eo = T*k_b
+
+wo = ((2*k_b*T/m)*(k/(k - 1.5)))**0.5 # Velocidad mas probable.
+Tu = (wo**2)*m/(2*k_b)
+
+G = gamma(Z, 10**-6,1) # Encontramos previamente un valor de Z que satisfaga 
+# gamma(k+1.5)/gamma(k-0.5), pasando a factoriales y volviendo a expresar como 
+# una funcion gamma tras hacer la division. El cociente de dos funciones gamma 
+# suele dar errores en Python segun la version.
+GAMMAS = G.pdf(E)
+A = 2*N_k/((pi)**0.5)
+B = (k-1.5)**(-1.5)
+C = A*B*GAMMAS
+
+a = (E)**0.5
+b = (k_b*Tu)**(-1.5)
+c = 1/(1 + E/((k-1.5)*k_b*Tu))**(k+1) # Cuidado! Este trmino genera un pico muy
+# abrupto, anulando la curva que da como resultado el producto de los otros
+# cinco parametros definididos. Por tanto, es necesario ajustar
+# la curva a un orden de escala adecuado. La explicacion mas plausible es
+# que la velocidad mas probable, wo, debe ser redefinida en funcion del problema tratado.
+
+# Se pueden encontrar distintas definiciones de la velocidad ms probable en la Tabla 2 de la referencia [15].
+
+escort = a*b*c # Algunos textos llaman ’escort’ a la parte de la funcion que noes la constante. Se traduciria como "distribucion escolta".
+
+f = C*escort
+
+plt.plot(E+0.5, f, c=’red’,linewidth=’3’) # Ajustamos E y f a una posicion y
+# orden de magnitud correctos, en funcin de los histogramas obtenidos.
+
+plt.grid(True)
+plt.legend(title= "\u03BA = valor de kappa", title_fontsize=’30’) # Leyenda
+plt.title(’Ttulo’, fontsize=15)
+plt.xlabel(’Energa (E/$k_B$T)’, fontsize=15)
+plt.ylabel(’Poblaciones’, fontsize=15)
+# plt.axis(xmax=) Podemos usar esto para ajustar el eje de abscisas segun convenga.
+
+plt.show()
