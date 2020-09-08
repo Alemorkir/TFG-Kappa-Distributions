@@ -1,3 +1,6 @@
+# Euler-Maruyama, con histogramas.
+# Lineas 37-42: valores recomendados por prueba y error para diferentes sistemas.
+
 import numpy as np
 from scipy import constants
 import matplotlib.pyplot as plt
